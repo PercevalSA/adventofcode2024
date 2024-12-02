@@ -2,6 +2,7 @@
 mod one;
 
 fn main() {
-    println!("Hello, world!");
-    one::solve();
+    println!("Starting advent of code");
+    one::solve_one();
+    one::solve_two();
 }
