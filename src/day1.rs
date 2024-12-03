@@ -29,7 +29,7 @@ fn get_data() -> (Vec<u32>, Vec<u32>) {
     (col_a, col_b)
 }
 
-pub fn solve_one() {
+pub fn part1() {
     let mut col_a: Vec<u32>;
     let mut col_b: Vec<u32>;
 
@@ -47,7 +47,7 @@ pub fn solve_one() {
     println!("The sum of the elements is {}", total_distance);
 }
 
-pub fn solve_two() {
+pub fn part2() {
     let col_a: Vec<u32>;
     let col_b: Vec<u32>;
     (col_a, col_b) = get_data();

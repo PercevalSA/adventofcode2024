@@ -1,4 +1,4 @@
-use adventofcode2024::day_2::solve_one;
+use adventofcode2024::day2::solve_one;
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 fn fibonacci(n: u64) -> u64 {

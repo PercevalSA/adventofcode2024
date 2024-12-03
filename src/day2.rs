@@ -64,7 +64,7 @@ fn count_valid_reports(data: Vec<Vec<u8>>) -> u32 {
     valid_reports_amount
 }
 
-pub fn solve_one() {
+pub fn part1() {
     // level should increase only or decrease only
     // difference between consecutives levels should be between 1 and 3
     let data: Vec<Vec<u8>> = parse_data(read_file("2.txt"));
@@ -95,7 +95,7 @@ fn count_valid_reports_with_permutations(data: Vec<Vec<u8>>) -> u32 {
 
     valid_reports_amount
 }
-pub fn solve_two() {
+pub fn part2() {
     let data: Vec<Vec<u8>> = parse_data(read_file("2.txt"));
 
     println!(

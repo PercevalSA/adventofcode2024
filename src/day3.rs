@@ -22,7 +22,7 @@ fn search_valid_mul(data: String) -> Vec<u32> {
     result
 }
 
-pub fn solve_one() {
+pub fn part1() {
     let valids_operations = search_valid_mul(read_file("3.txt"));
 
     println!("Solution: {:?}", valids_operations);
