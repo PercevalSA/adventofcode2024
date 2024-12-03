@@ -1,3 +1,4 @@
+
 #[path ="utils.rs"]
 mod utils;
 
@@ -105,6 +106,7 @@ pub fn solve_two() {
     );
 }
 
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -157,4 +159,15 @@ mod test {
 
         assert_eq!(count_valid_reports_with_permutations(data), 4);
     }
+
+    #[bench]
+    fn bench_one() {
+        solve_one();
+    }
+
+    #[bench]
+    fn bench_two() {
+        solve_two();
+    }
+
 }
