@@ -1,15 +1,13 @@
-use adventofcode2024::day2::part1;
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use adventofcode2024::day2::{part1, part2};
+use criterion::{criterion_group, criterion_main, Criterion};
 
-pub fn criterion_bench_day_two_first(c: &mut Criterion) {
-    c.bench_function("day 2 first", |b| b.iter(|| black_box(part1())));
+pub fn bench_day_2_part_1(c: &mut Criterion) {
+    c.bench_function("day 2 part 1", |b| b.iter(|| part1()));
 }
 
-criterion_group!(benches, criterion_bench_day_two_first);
-criterion_main!(benches);
+pub fn bench_day_2_part_2(c: &mut Criterion) {
+    c.bench_function("day 2 part 2", |b| b.iter(|| part2()));
+}
 
-// fn bench_two(bench: &mut Bencher) {
-//     bench.iter(|| {
-//         day_2::solve_two();
-//     })
-// }
+criterion_group!(benches, bench_day_2_part_1, bench_day_2_part_2);
+criterion_main!(benches);
