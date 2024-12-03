@@ -1,5 +1,4 @@
-#[path ="utils.rs"]
-mod utils;
+use crate::utils::read_file;
 
 fn parse_data(content: String) -> Vec<Vec<u8>> {
     // each line is a report
@@ -68,7 +67,7 @@ fn count_valid_reports(data: Vec<Vec<u8>>) -> u32 {
 pub fn solve_one() {
     // level should increase only or decrease only
     // difference between consecutives levels should be between 1 and 3
-    let data: Vec<Vec<u8>> = parse_data(utils::read_file("2.txt"));
+    let data: Vec<Vec<u8>> = parse_data(read_file("2.txt"));
 
     println!("Amount of valid reports {}", count_valid_reports(data));
 }
@@ -97,7 +96,7 @@ fn count_valid_reports_with_permutations(data: Vec<Vec<u8>>) -> u32 {
     valid_reports_amount
 }
 pub fn solve_two() {
-    let data: Vec<Vec<u8>> = parse_data(utils::read_file("2.txt"));
+    let data: Vec<Vec<u8>> = parse_data(read_file("2.txt"));
 
     println!(
         "Amount of valid reports with removals {}",
@@ -105,14 +104,13 @@ pub fn solve_two() {
     );
 }
 
-
 #[cfg(test)]
 mod test {
     use super::*;
 
     #[test]
     fn test_is_valid() {
-        let data = parse_data(utils::read_file("2_example.txt"));
+        let data = parse_data(read_file("2_example.txt"));
         println!("Les données de test sont {:?}", data);
 
         assert!(is_valid_decrease(&data[0]));
@@ -144,14 +142,14 @@ mod test {
 
     #[test]
     fn test_count() {
-        let data = parse_data(utils::read_file("2_example.txt"));
+        let data = parse_data(read_file("2_example.txt"));
 
         assert_eq!(count_valid_reports(data), 2);
     }
 
     #[test]
     fn test_removal() {
-        let data = parse_data(utils::read_file("2_example.txt"));
+        let data = parse_data(read_file("2_example.txt"));
 
         assert!(is_valid_with_removal(&data[3]));
         assert!(is_valid_with_removal(&data[4]));
