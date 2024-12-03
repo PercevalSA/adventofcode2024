@@ -14,5 +14,5 @@ fn main() {
     day2::part2();
 
     println!("day three");
-    day3::part1();
+    day3::solve_part_one();
 }

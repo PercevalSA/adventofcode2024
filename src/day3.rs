@@ -1,6 +1,7 @@
 use crate::utils::read_file;
+use std::fmt::Display;
 
-fn search_valid_mul(data: String) -> Vec<u32> {
+fn _solve_part_1(data: &str) -> u32 {
     // search for something like mul(u32, u32)
     let mut result: Vec<u32> = vec![];
 
@@ -36,22 +37,30 @@ fn search_valid_mul(data: String) -> Vec<u32> {
 
         result.push(num1 * num2);
     }
-    // println!("Result: {:?}", result);
-    result
+
+    let sum: u32 = result.iter().sum();
+    sum
 }
 
-pub fn part1() {
-    let valids_operations = search_valid_mul(read_file("3.txt"));
-
-    let sum: u32 = valids_operations.iter().sum();
-    println!("Amount given by valid operations: {:?}", sum);
+pub fn part1(data: &str) -> impl Display {
+    _solve_part_1(data)
 }
 
+pub fn solve_part_one() {
+    let data_string: String = read_file("3.txt");
+    let data: &str = data_string.as_str();
+    println!("Amount given by valid operations: {}", part1(data));
+}
 #[cfg(test)]
 
 mod test {
+    use super::*;
+
     #[test]
     fn search_valid_mul() {
-        println!("test not implemented")
+        let data_str: String = read_file("3_example.txt");
+        let data: &str = data_str.as_str();
+        let result = _solve_part_1(data);
+        assert_eq!(result, 161);
     }
 }
