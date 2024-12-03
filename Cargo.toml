@@ -5,9 +5,8 @@ edition = "2021"
 
 [dependencies]
 
-
 [dev-dependencies]
-bencher = { package = "codspeed-bencher-compat", version = "*" }
+bencher = { version = "2.7.2", package = "codspeed-bencher-compat" }
 
 [[bench]]
 name = "bench"

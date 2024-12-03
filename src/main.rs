@@ -4,6 +4,7 @@
 mod day_1;
 mod day_2;
 mod day_3;
+mod bench;
 fn main() {
     println!("Starting advent of code");
     println!("day one");

@@ -1,4 +1,3 @@
-
 #[path ="utils.rs"]
 mod utils;
 
@@ -152,22 +151,11 @@ mod test {
 
     #[test]
     fn test_removal() {
-        let data = parse_data(get_data("2_example.txt"));
+        let data = parse_data(utils::read_file("2_example.txt"));
 
         assert!(is_valid_with_removal(&data[3]));
         assert!(is_valid_with_removal(&data[4]));
 
         assert_eq!(count_valid_reports_with_permutations(data), 4);
     }
-
-    #[bench]
-    fn bench_one() {
-        solve_one();
-    }
-
-    #[bench]
-    fn bench_two() {
-        solve_two();
-    }
-
 }
