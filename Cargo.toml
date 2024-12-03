@@ -4,3 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+
+
+[dev-dependencies]
+bencher = { package = "codspeed-bencher-compat", version = "*" }
+
+[[bench]]
+name = "bench"
+harness = false
+path = "."
