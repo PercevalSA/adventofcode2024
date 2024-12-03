@@ -10,6 +10,5 @@ bencher = { version = "2.7.2", package = "codspeed-bencher-compat" }
 bencher = { version = "2.7.2", package = "codspeed-bencher-compat" }
 
 [[bench]]
-name = "bench"
+name = "codspeed"
 harness = false
-path = "."

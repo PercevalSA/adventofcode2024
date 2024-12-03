@@ -16,6 +16,5 @@ fn bench_two(bench: &mut Bencher) {
     })
 }
 
-
 benchmark_group!(benches, bench_one, bench_two);
 benchmark_main!(benches);
