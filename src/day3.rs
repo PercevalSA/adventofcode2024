@@ -43,7 +43,8 @@ fn search_valid_mul(data: String) -> Vec<u32> {
 pub fn part1() {
     let valids_operations = search_valid_mul(read_file("3.txt"));
 
-    println!("Solution: {:?}", valids_operations);
+    let sum: u32 = valids_operations.iter().sum();
+    println!("Amount given by valid operations: {:?}", sum);
 }
 
 #[cfg(test)]
