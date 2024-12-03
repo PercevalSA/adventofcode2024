@@ -46,9 +46,9 @@ fn is_valid_decrease(report: &Vec<u8>) -> bool {
 }
 
 fn is_valid(report: &Vec<u8>) -> bool {
-    print!("testing report {:?}", report);
+    // print!("testing report {:?}", report);
     let is_valid: bool = is_valid_increase(&report) || is_valid_decrease(&report);
-    println!(" {}", is_valid);
+    // println!(" {}", is_valid);
     is_valid
 }
 
