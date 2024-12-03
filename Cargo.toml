@@ -4,10 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-bencher = { version = "2.7.2", package = "codspeed-bencher-compat" }
 
 [dev-dependencies]
-bencher = { version = "2.7.2", package = "codspeed-bencher-compat" }
+# bencher = { version = "2.7.2", package = "codspeed-bencher-compat" }
+criterion = { version = "2.7.2", package = "codspeed-criterion-compat" }
 
 [[bench]]
 name = "codspeed"
