@@ -1,5 +1,5 @@
 fn get_data() -> (Vec<u32>, Vec<u32>) {
-    let file_name: &str = "one.txt";
+    let file_name: &str = "resources/1.txt";
 
     // open the file and get the content
     let content: String =
