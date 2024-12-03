@@ -1,10 +1,8 @@
 // #![feature(test)]
 
 // include function one from one file and call it in main function
-mod day_1;
-mod day_2;
-mod day_3;
-mod utils;
+use adventofcode2024::{day_1, day_2, day_3};
+
 fn main() {
     println!("Starting advent of code");
     println!("day one");
