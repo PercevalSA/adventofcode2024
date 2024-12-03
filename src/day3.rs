@@ -2,23 +2,41 @@ use crate::utils::read_file;
 
 fn search_valid_mul(data: String) -> Vec<u32> {
     // search for something like mul(u32, u32)
-    let result: Vec<u32> = vec![];
-    let splitted_data = data.split("mul(");
-    println!("splitted data  {:?}", splitted_data);
+    let mut result: Vec<u32> = vec![];
 
-    //     for mul in splitted_data {
-    //         let args = mul.split(")");
-    //         if args.count() == 1 {
-    //             continue;
-    //         }
-    //         let numbers = args.next().unwrap();
-    //         let (num1s, num2s): (&str, &str) = numbers.split(",");
+    let potential_muls = data.split("mul(");
 
-    //         let num1: u32 = num1s.parse::<u32>().expect("prout");
-    //         let num2: u32 = num2s.parse::<u32>().expect("plop");
+    for mul in potential_muls {
+        let mut args = mul.split(")");
+        // did not split so no ) in that part, so not valid
+        if args.clone().count() == 1 {
+            continue;
+        }
 
-    //         result.push(num1 * num2);
-    //     }
+        let numbers = args.next().unwrap();
+        let mut num_str = numbers.split(",");
+
+        let count = num_str.clone().count();
+        if count < 2 || count > 2 {
+            continue;
+        }
+
+        let n = num_str.next().unwrap().parse::<u32>();
+
+        let num1 = match n {
+            Ok(num) => num,
+            Err(_error) => continue,
+        };
+
+        let m = num_str.next().unwrap().parse::<u32>();
+        let num2 = match m {
+            Ok(num) => num,
+            Err(_error) => continue,
+        };
+
+        result.push(num1 * num2);
+    }
+    // println!("Result: {:?}", result);
     result
 }
 
