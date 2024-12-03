@@ -8,4 +8,5 @@ fn main() {
     one::solve_two();
 
     two::solve_one();
+    two::solve_two();
 }

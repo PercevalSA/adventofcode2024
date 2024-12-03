@@ -81,6 +81,38 @@ pub fn solve_one() {
     println!("Amount of valid reports {}", count_valid_reports(data));
 }
 
+fn is_valid_with_removal(report: &Vec<u8>) -> bool {
+    for permutation in 0..report.len() {
+        let mut temp_vec = report.clone();
+        temp_vec.remove(permutation);
+
+        if is_valid(&temp_vec) {
+            return true;
+        }
+    }
+    false
+}
+
+fn count_valid_reports_with_permutations(data: Vec<Vec<u8>>) -> u32 {
+    let mut valid_reports_amount: u32 = 0;
+
+    for report in data {
+        if is_valid(&report) || is_valid_with_removal(&report) {
+            valid_reports_amount += 1;
+        }
+    }
+
+    valid_reports_amount
+}
+pub fn solve_two() {
+    let data: Vec<Vec<u8>> = parse_data(get_data("two.txt"));
+
+    println!(
+        "Amount of valid reports with removals {}",
+        count_valid_reports_with_permutations(data)
+    );
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -122,5 +154,15 @@ mod test {
         let data = parse_data(get_data("/workspaces/adventofcode2024/src/two_example.txt"));
 
         assert_eq!(count_valid_reports(data), 2);
+    }
+
+    #[test]
+    fn test_removal() {
+        let data = parse_data(get_data("/workspaces/adventofcode2024/src/two_example.txt"));
+
+        assert!(is_valid_with_removal(&data[3]));
+        assert!(is_valid_with_removal(&data[4]));
+
+        assert_eq!(count_valid_reports_with_permutations(data), 4);
     }
 }
