@@ -1,12 +1,10 @@
-use std::fs::File;
-use std::io::Read;
+use std::fs;
 
 pub fn read_file(filename: &str) -> String {
-    let file_path = format!("resources/{}", filename);
-    println!("reading file {}", file_path);
-    let mut file = File::open(file_path).expect("can't read file");
-    let mut content = String::new();
-    let _ = file.read_to_string(&mut content);
+    let path = format!("./resources/{}.txt", filename);
+    fs::read_to_string(path).unwrap()
+}
 
-    content
+pub fn get_lines(content: &str) -> Vec<String> {
+    content.split("\n").map(|s| s.to_string()).collect()
 }

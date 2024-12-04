@@ -47,7 +47,7 @@ pub fn part1(data: &str) -> impl Display {
 }
 
 pub fn solve_part_one() {
-    let data_string: String = read_file("3.txt");
+    let data_string: String = read_file("3");
     let data: &str = data_string.as_str();
     println!("Amount given by valid operations: {}", part1(data));
 }
@@ -58,7 +58,7 @@ mod test {
 
     #[test]
     fn search_valid_mul() {
-        let data_str: String = read_file("3_example.txt");
+        let data_str: String = read_file("3_example");
         let data: &str = data_str.as_str();
         let result = _solve_part_1(data);
         assert_eq!(result, 161);

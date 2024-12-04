@@ -10,8 +10,8 @@ fn main() {
     day1::part2();
 
     println!("day two");
-    day2::part1();
-    day2::part2();
+    day2::solve_part1();
+    day2::solve_part1();
 
     println!("day three");
     day3::solve_part_one();

@@ -1,29 +1,17 @@
-use adventofcode2024::{day2, day3};
-use criterion::{criterion_group, criterion_main, Criterion};
-use std::fs::File;
-use std::io::Read;
+use adventofcode2024::{day2, day3, utils};
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
-pub fn bench_day_2_part_1(c: &mut Criterion) {
+pub fn bench_day_2(c: &mut Criterion) {
     c.bench_function("day 2 part 1", |b| b.iter(|| day2::part1()));
-}
-
-pub fn bench_day_2_part_2(c: &mut Criterion) {
     c.bench_function("day 2 part 2", |b| b.iter(|| day2::part2()));
 }
 
-pub fn bench_day_3_part_1(c: &mut Criterion) {
-    let mut file = File::open("../resources/3.txt").expect("can't read file");
-    let mut content = String::new();
-    let _ = file.read_to_string(&mut content);
-    let data = content.as_str();
+pub fn bench_day_3(c: &mut Criterion) {
+    let data_str = utils::read_file("3");
+    let data = data_str.as_str();
 
-    c.bench_function("day 3 part 1", |b| b.iter(|| day3::part1(data)));
+    c.bench_function("day 3 part 1", |b| b.iter(|| day3::part1(black_box(data))));
 }
 
-criterion_group!(
-    benches,
-    bench_day_2_part_1,
-    bench_day_2_part_2,
-    bench_day_3_part_1
-);
+criterion_group!(benches, bench_day_2, bench_day_3,);
 criterion_main!(benches);
