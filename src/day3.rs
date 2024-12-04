@@ -1,7 +1,7 @@
 use crate::utils::read_file;
 use std::fmt::Display;
 
-fn _solve_part_1(data: &str) -> u32 {
+fn _part1(data: &str) -> u32 {
     // search for something like mul(u32, u32)
     let mut result: Vec<u32> = vec![];
 
@@ -43,14 +43,38 @@ fn _solve_part_1(data: &str) -> u32 {
 }
 
 pub fn part1(data: &str) -> impl Display {
-    _solve_part_1(data)
+    _part1(data)
 }
 
-pub fn solve_part_one() {
+pub fn solve_part1() {
     let data_string: String = read_file("3");
     let data: &str = data_string.as_str();
     println!("Amount given by valid operations: {}", part1(data));
 }
+
+fn _part2(data: &str) -> u32 {
+    let mut final_list: String = String::from("");
+
+    let do_mul_s = data.split("do()");
+    for do_mul in do_mul_s {
+        // get the first item after the split of any "don't"
+        // that drops everything else
+        final_list.push_str(do_mul.split("don't()").next().expect("plop"));
+    }
+
+    _part1(final_list.as_str())
+}
+
+pub fn part2(data: &str) -> impl Display {
+    _part2(data)
+}
+
+pub fn solve_part2() {
+    let data_string: String = read_file("3");
+    let data: &str = data_string.as_str();
+    println!("Amount given by valid operations with do: {}", _part2(data));
+}
+
 #[cfg(test)]
 
 mod test {
@@ -60,7 +84,15 @@ mod test {
     fn search_valid_mul() {
         let data_str: String = read_file("3_example");
         let data: &str = data_str.as_str();
-        let result = _solve_part_1(data);
+        let result = _part1(data);
         assert_eq!(result, 161);
+    }
+
+    #[test]
+    fn search_do_mul() {
+        let data_str: String = read_file("3_example_2");
+        let data: &str = data_str.as_str();
+        let result = _part2(data);
+        assert_eq!(result, 48);
     }
 }
