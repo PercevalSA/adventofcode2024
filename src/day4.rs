@@ -16,18 +16,7 @@ pub fn parse_input(input: &str) -> Vec<String> {
     let nb_diags = nb_lines + line_size;
     let mut cols: Vec<String> = vec![];
     let mut diags: HashMap<usize, String> = HashMap::new();
-
-    // let num_string = num.to_string();
-    // let b: u8  = num_string.as_bytes()[i];
-    // let c: char = b as char;  // if you need to get the character as a unicode code point
-
-    // If you do need to index code points, you have to use the chars() iterator:
-    // num_string.chars().nth(i).unwrap()
-
-    // we want to generate diag at the same time
-    // there are nblines+ nbcol number of diags
-    // a diag is indexed as nblines+nbcols-iterline-itercol
-    // that mind need -1 adjustment because of index
+    let mut back_diags: HashMap<usize, String> = HashMap::new();
 
     for i in 0..line_size {
         let mut new_col: String = String::from("");
@@ -47,16 +36,30 @@ pub fn parse_input(input: &str) -> Vec<String> {
             } else {
                 diags.get_mut(&id).expect("not in hashmap").push(new_char);
             }
+
+            let bid = i + j;
+            if !back_diags.contains_key(&bid) {
+                back_diags.insert(bid, String::from(new_char));
+            } else {
+                back_diags
+                    .get_mut(&bid)
+                    .expect("not in hashmap")
+                    .push(new_char);
+            }
         }
         cols.push(new_col);
     }
 
     let mut all_data: Vec<String> = vec![];
     let mut diagonals = diags.values().cloned().collect::<Vec<String>>();
+    let mut back_diagonals = back_diags.values().cloned().collect::<Vec<String>>();
 
     all_data.append(&mut lines);
     all_data.append(&mut cols);
     all_data.append(&mut diagonals);
+    all_data.append(&mut back_diagonals);
+
+    println!("back diags {:?}", back_diagonals);
 
     all_data
 }
