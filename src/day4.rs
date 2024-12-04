@@ -7,6 +7,13 @@ pub fn parse_input(input: &str) -> Vec<&str> {
     let input_size = input.len();
     let mut cols: String = String::from("");
 
+    // let num_string = num.to_string();
+    // let b: u8 = num_string.as_bytes()[i];
+    // let c: char = b as char;  // if you need to get the character as a unicode code point
+
+    // If you do need to index code points, you have to use the chars() iterator:
+    // num_string.chars().nth(i).unwrap()
+    
     for i in 0..line_size {
         let mut new_col: String = "";
         for line in lines {
