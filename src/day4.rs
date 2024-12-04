@@ -4,9 +4,12 @@ pub fn parse_input(input: &str) -> Vec<&str> {
     // transform everything as byte to be faster?
     let lines: Vec<&str> = input.split("\n").collect();
     let line_size = lines[0].len();
+    let nb_lines = lines.len();
     let input_size = input.len();
+    let nb_diags = nb_lines + line_size;
     let mut cols: String = String::from("");
-
+    let mut diags: [Vec<char>; nb_diags] = [];
+    
     // let num_string = num.to_string();
     // let b: u8 = num_string.as_bytes()[i];
     // let c: char = b as char;  // if you need to get the character as a unicode code point
@@ -14,10 +17,15 @@ pub fn parse_input(input: &str) -> Vec<&str> {
     // If you do need to index code points, you have to use the chars() iterator:
     // num_string.chars().nth(i).unwrap()
     
+    // we want to generate diag at the same time
+    // there are nblines+ nbcol number of diags
+    // a diag is indexed as nblines+nbcols-iterline-itercol 
+    // that mind need -1 adjustment because of index
     for i in 0..line_size {
         let mut new_col: String = "";
-        for line in lines {
-            new_col.extend(line);
+        for (j, line) in enumerate(lines) {
+            new_col.extend(line[i]);
+            diags[nb_diags - i - j].push(line[i];
         }
         cols.push_str(line[i]);
 
@@ -29,6 +37,7 @@ pub fn parse_input(input: &str) -> Vec<&str> {
     let all_data: Vec<&str> = vec![];
     all_data.extend_from_slice(&lines);
     all_data.extend_from_slice(&cols);
+    all_data.extend_from_slice(&diags);
 
     all_data
 }
