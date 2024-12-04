@@ -1,5 +1,3 @@
-use crate::utils::read_file;
-
 #[aoc(day3, part1)]
 pub fn part1(data: &str) -> u32 {
     // search for something like mul(u32, u32)
@@ -42,12 +40,6 @@ pub fn part1(data: &str) -> u32 {
     sum
 }
 
-pub fn solve_part1() {
-    let data_string: String = read_file("3");
-    let data: &str = data_string.as_str();
-    println!("Amount given by valid operations: {}", part1(data));
-}
-
 #[aoc(day3, part2)]
 pub fn part2(data: &str) -> u32 {
     let mut final_list: String = String::from("");
@@ -62,15 +54,10 @@ pub fn part2(data: &str) -> u32 {
     part1(final_list.as_str())
 }
 
-pub fn solve_part2() {
-    let data_string: String = read_file("3");
-    let data: &str = data_string.as_str();
-    println!("Amount given by valid operations with do: {}", part2(data));
-}
-
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::utils::read_file;
 
     #[test]
     fn search_valid_mul() {

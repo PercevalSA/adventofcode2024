@@ -1,25 +1,10 @@
-// use std::fmt;
-
-use crate::utils::read_file;
-
-// pub struct ReportList(Vec<Vec<u8>>);
-
-// impl fmt::Display for ReportList {
-//     // This trait requires `fmt` with this exact signature.
-//     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-//         // Write strictly the first element into the supplied output
-//         // stream: `f`. Returns `fmt::Result` which indicates whether the
-//         // operation succeeded or failed. Note that `write!` uses syntax which
-//         // is very similar to `println!`.
-//         write!(f, "{}", self.0)
-//     }
-// }
+type Report = Vec<u8>;
 
 #[aoc_generator(day2)]
-fn parse_data(input: &str) -> Vec<Vec<u8>> {
+pub fn parse_data(input: &str) -> Vec<Report> {
     // each line is a report
     // each number in line is a level
-    let mut data: Vec<Vec<u8>> = vec![];
+    let mut data: Vec<Report> = vec![];
 
     let lines = input.split('\n');
 
@@ -35,7 +20,7 @@ fn parse_data(input: &str) -> Vec<Vec<u8>> {
     data
 }
 
-fn is_valid_increase(report: &Vec<u8>) -> bool {
+fn is_valid_increase(report: &Report) -> bool {
     let iter_window = report.windows(2);
 
     // increase
@@ -48,7 +33,7 @@ fn is_valid_increase(report: &Vec<u8>) -> bool {
     true
 }
 
-fn is_valid_decrease(report: &Vec<u8>) -> bool {
+fn is_valid_decrease(report: &Report) -> bool {
     let iter_window = report.windows(2);
 
     // increase
@@ -61,18 +46,13 @@ fn is_valid_decrease(report: &Vec<u8>) -> bool {
     true
 }
 
-fn is_valid(report: &Vec<u8>) -> bool {
-    // print!("testing report {:?}", report);
-    let is_valid: bool = is_valid_increase(&report) || is_valid_decrease(&report);
-    // println!(" {}", is_valid);
-    is_valid
-}
-
-fn count_valid_reports(data: Vec<Vec<u8>>) -> u32 {
+fn count_valid_reports(data: &Vec<Report>) -> u32 {
     let mut valid_reports_amount: u32 = 0;
 
+    // level should increase only or decrease only
+    // difference between consecutives levels should be between 1 and 3
     for report in data {
-        if is_valid(&report) {
+        if is_valid_increase(&report) || is_valid_decrease(&report) {
             valid_reports_amount += 1;
         }
     }
@@ -81,29 +61,30 @@ fn count_valid_reports(data: Vec<Vec<u8>>) -> u32 {
 }
 
 #[aoc(day2, part1)]
-pub fn part1(reports: Vec<Vec<u8>>) -> u32 {
-    // level should increase only or decrease only
-    // difference between consecutives levels should be between 1 and 3
+pub fn part1(reports: &Vec<Report>) -> u32 {
     count_valid_reports(reports)
 }
 
-fn is_valid_with_removal(report: &Vec<u8>) -> bool {
+fn is_valid_with_removal(report: &Report) -> bool {
     for permutation in 0..report.len() {
         let mut temp_vec = report.clone();
         temp_vec.remove(permutation);
 
-        if is_valid(&temp_vec) {
+        if is_valid_increase(&temp_vec) || is_valid_decrease(&temp_vec) {
             return true;
         }
     }
     false
 }
 
-fn count_valid_reports_with_permutations(data: Vec<Vec<u8>>) -> u32 {
+fn count_valid_reports_with_permutations(reports: &Vec<Report>) -> u32 {
     let mut valid_reports_amount: u32 = 0;
 
-    for report in data {
-        if is_valid(&report) || is_valid_with_removal(&report) {
+    for report in reports {
+        if is_valid_increase(&report)
+            || is_valid_decrease(&report)
+            || is_valid_with_removal(&report)
+        {
             valid_reports_amount += 1;
         }
     }
@@ -112,23 +93,14 @@ fn count_valid_reports_with_permutations(data: Vec<Vec<u8>>) -> u32 {
 }
 
 #[aoc(day2, part2)]
-pub fn part2(data: &str) -> u32 {
-    let reports: Vec<Vec<u8>> = parse_data(data);
+pub fn part2(reports: &Vec<Report>) -> u32 {
     count_valid_reports_with_permutations(reports)
-}
-
-pub fn solve_part2() {
-    let content = read_file("2");
-    println!(
-        "Amount of valid reports with removals {}",
-        part2(content.as_str())
-    );
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
-
+    use crate::utils::read_file;
     #[test]
     fn test_is_valid() {
         let data = parse_data(read_file("2_example").as_str());
@@ -151,30 +123,21 @@ mod test {
 
         assert!(!is_valid_decrease(&data[5]));
         assert!(is_valid_increase(&data[5]));
-
-        assert!(is_valid(&data[0]));
-        assert!(is_valid(&data[5]));
-
-        assert!(!is_valid(&data[1]));
-        assert!(!is_valid(&data[2]));
-        assert!(!is_valid(&data[3]));
-        assert!(!is_valid(&data[4]));
     }
 
     #[test]
     fn test_count() {
         let data = parse_data(read_file("2_example").as_str());
 
-        assert_eq!(count_valid_reports(data), 2);
+        assert_eq!(count_valid_reports(&data), 2);
     }
 
     #[test]
     fn test_removal() {
         let data = parse_data(read_file("2_example").as_str());
-
         assert!(is_valid_with_removal(&data[3]));
         assert!(is_valid_with_removal(&data[4]));
 
-        assert_eq!(count_valid_reports_with_permutations(data), 4);
+        assert_eq!(count_valid_reports_with_permutations(&data), 4);
     }
 }
