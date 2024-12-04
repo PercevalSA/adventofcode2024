@@ -1,6 +1,5 @@
-use core::fmt;
-
 use crate::utils::read_file;
+use core::fmt;
 
 fn parse_data(content: &str) -> Vec<Vec<u8>> {
     // each line is a report
@@ -73,6 +72,7 @@ fn _part1(data: &str) -> u32 {
     count_valid_reports(reports)
 }
 
+#[aoc(day2, part1)]
 pub fn part1(data: &str) -> impl fmt::Display {
     _part1(data)
 }
@@ -111,6 +111,7 @@ fn _part2(data: &str) -> u32 {
     count_valid_reports_with_permutations(reports)
 }
 
+#[aoc(day2, part2)]
 pub fn part2(data: &str) -> impl fmt::Display {
     _part2(data)
 }

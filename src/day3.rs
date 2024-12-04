@@ -42,6 +42,7 @@ fn _part1(data: &str) -> u32 {
     sum
 }
 
+#[aoc(day3, part1)]
 pub fn part1(data: &str) -> impl Display {
     _part1(data)
 }
@@ -65,6 +66,7 @@ fn _part2(data: &str) -> u32 {
     _part1(final_list.as_str())
 }
 
+#[aoc(day3, part2)]
 pub fn part2(data: &str) -> impl Display {
     _part2(data)
 }
@@ -76,7 +78,6 @@ pub fn solve_part2() {
 }
 
 #[cfg(test)]
-
 mod test {
     use super::*;
 
