@@ -1,7 +1,7 @@
 use crate::utils::read_file;
-use std::fmt::Display;
 
-fn _part1(data: &str) -> u32 {
+#[aoc(day3, part1)]
+pub fn part1(data: &str) -> u32 {
     // search for something like mul(u32, u32)
     let mut result: Vec<u32> = vec![];
 
@@ -42,18 +42,14 @@ fn _part1(data: &str) -> u32 {
     sum
 }
 
-#[aoc(day3, part1)]
-pub fn part1(data: &str) -> impl Display {
-    _part1(data)
-}
-
 pub fn solve_part1() {
     let data_string: String = read_file("3");
     let data: &str = data_string.as_str();
     println!("Amount given by valid operations: {}", part1(data));
 }
 
-fn _part2(data: &str) -> u32 {
+#[aoc(day3, part2)]
+pub fn part2(data: &str) -> u32 {
     let mut final_list: String = String::from("");
 
     let do_mul_s = data.split("do()");
@@ -63,18 +59,13 @@ fn _part2(data: &str) -> u32 {
         final_list.push_str(do_mul.split("don't()").next().expect("plop"));
     }
 
-    _part1(final_list.as_str())
-}
-
-#[aoc(day3, part2)]
-pub fn part2(data: &str) -> impl Display {
-    _part2(data)
+    part1(final_list.as_str())
 }
 
 pub fn solve_part2() {
     let data_string: String = read_file("3");
     let data: &str = data_string.as_str();
-    println!("Amount given by valid operations with do: {}", _part2(data));
+    println!("Amount given by valid operations with do: {}", part2(data));
 }
 
 #[cfg(test)]
@@ -85,7 +76,7 @@ mod test {
     fn search_valid_mul() {
         let data_str: String = read_file("3_example");
         let data: &str = data_str.as_str();
-        let result = _part1(data);
+        let result = part1(data);
         assert_eq!(result, 161);
     }
 
@@ -93,7 +84,7 @@ mod test {
     fn search_do_mul() {
         let data_str: String = read_file("3_example_2");
         let data: &str = data_str.as_str();
-        let result = _part2(data);
+        let result = part2(data);
         assert_eq!(result, 48);
     }
 }

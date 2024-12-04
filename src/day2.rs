@@ -1,12 +1,27 @@
-use crate::utils::read_file;
-use core::fmt;
+// use std::fmt;
 
-fn parse_data(content: &str) -> Vec<Vec<u8>> {
+use crate::utils::read_file;
+
+// pub struct ReportList(Vec<Vec<u8>>);
+
+// impl fmt::Display for ReportList {
+//     // This trait requires `fmt` with this exact signature.
+//     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+//         // Write strictly the first element into the supplied output
+//         // stream: `f`. Returns `fmt::Result` which indicates whether the
+//         // operation succeeded or failed. Note that `write!` uses syntax which
+//         // is very similar to `println!`.
+//         write!(f, "{}", self.0)
+//     }
+// }
+
+#[aoc_generator(day2)]
+fn parse_data(input: &str) -> Vec<Vec<u8>> {
     // each line is a report
     // each number in line is a level
     let mut data: Vec<Vec<u8>> = vec![];
 
-    let lines = content.split('\n');
+    let lines = input.split('\n');
 
     for line in lines {
         let temp = line
@@ -65,21 +80,11 @@ fn count_valid_reports(data: Vec<Vec<u8>>) -> u32 {
     valid_reports_amount
 }
 
-fn _part1(data: &str) -> u32 {
+#[aoc(day2, part1)]
+pub fn part1(reports: Vec<Vec<u8>>) -> u32 {
     // level should increase only or decrease only
     // difference between consecutives levels should be between 1 and 3
-    let reports: Vec<Vec<u8>> = parse_data(data);
     count_valid_reports(reports)
-}
-
-#[aoc(day2, part1)]
-pub fn part1(data: &str) -> impl fmt::Display {
-    _part1(data)
-}
-
-pub fn solve_part1() {
-    let content = read_file("2");
-    println!("Amount of valid reports {}", _part1(content.as_str()));
 }
 
 fn is_valid_with_removal(report: &Vec<u8>) -> bool {
@@ -106,21 +111,17 @@ fn count_valid_reports_with_permutations(data: Vec<Vec<u8>>) -> u32 {
     valid_reports_amount
 }
 
-fn _part2(data: &str) -> u32 {
+#[aoc(day2, part2)]
+pub fn part2(data: &str) -> u32 {
     let reports: Vec<Vec<u8>> = parse_data(data);
     count_valid_reports_with_permutations(reports)
-}
-
-#[aoc(day2, part2)]
-pub fn part2(data: &str) -> impl fmt::Display {
-    _part2(data)
 }
 
 pub fn solve_part2() {
     let content = read_file("2");
     println!(
         "Amount of valid reports with removals {}",
-        _part2(content.as_str())
+        part2(content.as_str())
     );
 }
 
