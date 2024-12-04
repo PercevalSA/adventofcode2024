@@ -103,7 +103,7 @@ mod test {
     use crate::utils::read_file;
     #[test]
     fn test_is_valid() {
-        let data = parse_data(read_file("2_example").as_str());
+        let data = parse_data(read_file("day2_example").as_str());
         println!("Les données de test sont {:?}", data);
 
         assert!(is_valid_decrease(&data[0]));
@@ -127,14 +127,14 @@ mod test {
 
     #[test]
     fn test_count() {
-        let data = parse_data(read_file("2_example").as_str());
+        let data = parse_data(read_file("day2_example").as_str());
 
         assert_eq!(count_valid_reports(&data), 2);
     }
 
     #[test]
     fn test_removal() {
-        let data = parse_data(read_file("2_example").as_str());
+        let data = parse_data(read_file("day2_example").as_str());
         assert!(is_valid_with_removal(&data[3]));
         assert!(is_valid_with_removal(&data[4]));
 

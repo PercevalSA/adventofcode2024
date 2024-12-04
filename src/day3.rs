@@ -61,7 +61,7 @@ mod test {
 
     #[test]
     fn search_valid_mul() {
-        let data_str: String = read_file("3_example");
+        let data_str: String = read_file("day3_example");
         let data: &str = data_str.as_str();
         let result = part1(data);
         assert_eq!(result, 161);
@@ -69,7 +69,7 @@ mod test {
 
     #[test]
     fn search_do_mul() {
-        let data_str: String = read_file("3_example_2");
+        let data_str: String = read_file("day3_example_2");
         let data: &str = data_str.as_str();
         let result = part2(data);
         assert_eq!(result, 48);
