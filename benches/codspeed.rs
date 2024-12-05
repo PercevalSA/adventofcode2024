@@ -18,10 +18,10 @@ pub fn bench_day_3(c: &mut Criterion) {
 }
 
 pub fn bench_day_4(c: &mut Criterion) {
-    let data_str = utils::read_file("day3");
-    let data = data_str.as_str();
+    let data_str = utils::read_file("day4");
+    let data = day4::parse_input(data_str.as_str());
 
-    c.bench_function("day 4 part 1", |b| b.iter(|| day4::part1(black_box(data))));
+    c.bench_function("day 4 part 1", |b| b.iter(|| day4::part1(black_box(&data))));
     // c.bench_function("day 4 part 2", |b| b.iter(|| day4::part2(black_box(data))));
 }
 
