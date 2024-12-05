@@ -1,3 +1,5 @@
+use aoc_runner_derive::aoc;
+
 #[aoc(day3, part1)]
 pub fn part1(data: &str) -> u32 {
     // search for something like mul(u32, u32)
