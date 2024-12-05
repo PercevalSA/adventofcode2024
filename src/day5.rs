@@ -2,7 +2,7 @@ use aoc_runner_derive::{aoc, aoc_generator};
 use std::collections::HashMap;
 
 #[aoc_generator(day5)]
-fn parse(input: &str) -> (HashMap<(u8, u8), u8>, Vec<Vec<u8>>) {
+pub fn parse(input: &str) -> (HashMap<(u8, u8), u8>, Vec<Vec<u8>>) {
     // split on double line break: then split on pipe or split on comma
     let mut splitted_input = input.split("\n\n");
     let rules = splitted_input.next().expect("rules").lines();
@@ -44,7 +44,7 @@ fn parse(input: &str) -> (HashMap<(u8, u8), u8>, Vec<Vec<u8>>) {
 }
 
 #[aoc(day5, part1)]
-fn part1(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
+pub fn part1(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
     let (graph, pages) = input;
     let mut result: usize = 0;
 
