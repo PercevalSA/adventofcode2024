@@ -1,7 +1,13 @@
 use aoc_runner_derive::{aoc, aoc_generator};
 #[aoc_generator(day5)]
 fn parse(input: &str) -> String {
+    // split on double line break
+    // then split on pipe
+    // split on comma
     todo!()
+
+    // rules can be view as an oriented graph
+    // then the page are the path and we need to know if the path exist or not 
 }
 
 #[aoc(day5, part1)]
