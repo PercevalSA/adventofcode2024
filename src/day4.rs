@@ -30,14 +30,15 @@ pub fn parse_input(input: &str) -> Vec<String> {
 
             new_col.push(new_char as char);
 
-            let id = nb_diags - i - j;
+            println!("i {} j {} new_char {}", i, j, new_char);
+            let id: usize = i + j;
             if !diags.contains_key(&id) {
                 diags.insert(id, String::from(new_char));
             } else {
                 diags.get_mut(&id).expect("not in hashmap").push(new_char);
             }
 
-            let bid = i + j;
+            let bid: usize = nb_diags - j + i ;
             if !back_diags.contains_key(&bid) {
                 back_diags.insert(bid, String::from(new_char));
             } else {
@@ -46,6 +47,8 @@ pub fn parse_input(input: &str) -> Vec<String> {
                     .expect("not in hashmap")
                     .push(new_char);
             }
+
+            println!("id {} bid {}", id, bid);
         }
         cols.push(new_col);
     }
@@ -54,12 +57,15 @@ pub fn parse_input(input: &str) -> Vec<String> {
     let mut diagonals = diags.values().cloned().collect::<Vec<String>>();
     let mut back_diagonals = back_diags.values().cloned().collect::<Vec<String>>();
 
+    println!("lines {:?}", lines);
+    println!("cols {:?}", cols);
+    println!("diags {:?}", diagonals);
+    println!("back diags {:?}", back_diagonals);
+
     all_data.append(&mut lines);
     all_data.append(&mut cols);
     all_data.append(&mut diagonals);
     all_data.append(&mut back_diagonals);
-
-    println!("back diags {:?}", back_diagonals);
 
     all_data
 }
@@ -67,7 +73,7 @@ pub fn parse_input(input: &str) -> Vec<String> {
 #[aoc(day4, part1)]
 pub fn part1(data: &Vec<String>) -> usize {
     let mut result: usize = 0;
-    println!("{:?}", data);
+    println!("All lines {:?}", data);
     for line in data {
         let test = line.match_indices("XMAS").count();
         let tist = line.match_indices("SAMX").count();
