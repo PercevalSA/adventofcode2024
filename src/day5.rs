@@ -48,21 +48,28 @@ fn part1(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
     let (graph, pages) = input;
     let mut result: usize = 0;
 
-    for update in pages {
+    'outer: for update in pages {
         println!("Update: {:?}", update);
-        for win in update.windows(2) {
-            let toto = (win[0], win[1]);
-            // println!("tuple {:?}", toto);
-            if !graph.contains_key(&toto) {
-                println!("Invalid update");
+        let update_length_minus = update.len() - 1;
+
+        for previous_page in update {
+            let pp_index_next = update.iter().position(|p| p == previous_page).unwrap() + 1;
+            if pp_index_next > update_length_minus {
                 break;
+            }
+            for next_page in update[pp_index_next..update_length_minus].iter() {
+                let page_order = (*previous_page, *next_page);
+                if !graph.contains_key(&page_order) {
+                    println!("Invalid update {:?}", page_order);
+                    break 'outer;
+                }
             }
         }
 
-        // update is valid
-        let length = update.len();
+        println!("Update is valid: {:?}", update);
+
         // always odd number of pages
-        let middle = (length - 1) / 2;
+        let middle = update_length_minus / 2;
         result += update[middle] as usize;
     }
     result
