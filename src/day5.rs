@@ -78,10 +78,47 @@ pub fn part1(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
     result
 }
 
-// #[aoc(day5, part2)]
-// fn part2(input: &str) -> String {
-//     todo!()
-// }
+#[aoc(day5, part2)]
+pub fn part2(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
+    let (graph, all_updates) = input;
+    let mut result: usize = 0;
+
+    // println!("all update: {:?}", all_updates);
+
+    'outer: for mut update in all_updates {
+        // println!("Update: {:?}", update);
+        let update_length = update.len();
+        let mut was_incorrect: bool = false;
+
+        'inner: for previous_page in update {
+            let pp_index_next = update.iter().position(|p| p == previous_page).unwrap() + 1;
+            if pp_index_next >= update_length {
+                break;
+            }
+            for next_page in update[pp_index_next..update_length].iter() {
+                let page_order = (*previous_page, *next_page);
+                // println!("testing: {:?}", page_order);
+                if !graph.contains_key(&page_order) {
+                    // println!("Invalid update {:?}", page_order);
+                    // here we swap the two numbers and the retest the whole update
+                    update.swap(pp_index_next - 1, pp_index_next);
+                    was_incorrect = true;
+                    break 'inner;
+                }
+            }
+        }
+
+        // println!("Update is valid: {:?}", update);
+
+        // always odd number of pages
+        if was_incorrect {
+            let middle = (update_length - 1) / 2;
+            result += update[middle] as usize;
+            was_incorrect = false;
+        }
+    }
+    result
+}
 
 #[cfg(test)]
 mod tests {
@@ -95,8 +132,10 @@ mod tests {
         assert_eq!(part1(&input), result);
     }
 
-    // #[test]
-    // fn part2_example() {
-    //     assert_eq!(part2(&parse("<EXAMPLE>")), "<RESULT>");
-    // }
+    #[test]
+    fn part2_example() {
+        let input = parse(read_file("day5_example").as_str());
+        let result: usize = 123;
+        assert_eq!(part2(&input), result);
+    }
 }
