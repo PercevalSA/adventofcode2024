@@ -28,7 +28,7 @@ fn parse(input: &str) -> (HashMap<(u8, u8), u8>, Vec<Vec<u8>>) {
         graph.insert((from, to), 0);
     }
 
-    println!("This is my graph {:?}", graph);
+    // println!("This is my graph {:?}", graph);
 
     // let pages: Vec<Vec<u8>> = updates.iter().split(",").collect();
     let mut pages: Vec<Vec<u8>> = vec![];
@@ -38,7 +38,7 @@ fn parse(input: &str) -> (HashMap<(u8, u8), u8>, Vec<Vec<u8>>) {
         pages.push(pages_numbers);
     }
 
-    println!("Those are updates: {:?}", pages);
+    // println!("Those are updates: {:?}", pages);
 
     (graph, pages)
 }
@@ -49,7 +49,7 @@ fn part1(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
     let mut result: usize = 0;
 
     'outer: for update in pages {
-        println!("Update: {:?}", update);
+        // println!("Update: {:?}", update);
         let update_length_minus = update.len() - 1;
 
         for previous_page in update {
@@ -60,13 +60,13 @@ fn part1(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
             for next_page in update[pp_index_next..update_length_minus].iter() {
                 let page_order = (*previous_page, *next_page);
                 if !graph.contains_key(&page_order) {
-                    println!("Invalid update {:?}", page_order);
+                    // println!("Invalid update {:?}", page_order);
                     break 'outer;
                 }
             }
         }
 
-        println!("Update is valid: {:?}", update);
+        // println!("Update is valid: {:?}", update);
 
         // always odd number of pages
         let middle = update_length_minus / 2;
