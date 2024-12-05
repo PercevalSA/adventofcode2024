@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::io::BufRead;
 
-#[aoc_generator(day4)]
+#[aoc_generator(day4, part1)]
 pub fn parse_input(input: &str) -> Vec<String> {
     // generates all lines present in data so in gain time in search
     // transform everything as byte to be faster
@@ -37,7 +37,7 @@ pub fn parse_input(input: &str) -> Vec<String> {
                 diags.get_mut(&id).expect("not in hashmap").push(new_char);
             }
 
-            let bid: usize = nb_diags - j + i ;
+            let bid: usize = nb_diags - j + i;
             if !back_diags.contains_key(&bid) {
                 back_diags.insert(bid, String::from(new_char));
             } else {
@@ -62,6 +62,18 @@ pub fn parse_input(input: &str) -> Vec<String> {
     all_data
 }
 
+#[aoc_generator(day4, part2)]
+pub fn parse_input_part2(input: &str) -> HashMap<(usize, usize), char> {
+    let mut all_chars: HashMap<(usize, usize), char> = HashMap::new();
+    let lines = input.lines();
+    for (i, line) in lines.enumerate() {
+        for (j, letter) in line.as_bytes().iter().enumerate() {
+            all_chars.insert((i, j), char::from(*letter));
+        }
+    }
+    all_chars
+}
+
 #[aoc(day4, part1)]
 pub fn part1(data: &Vec<String>) -> usize {
     let mut result: usize = 0;
@@ -72,9 +84,35 @@ pub fn part1(data: &Vec<String>) -> usize {
     result
 }
 
-// #[aoc(day4, part2)]
-// pub fn part2(data: &str) -> u32 {}
+#[aoc(day4, part2)]
+pub fn part2(data: &HashMap<(usize, usize), char>) -> usize {
+    // find MAS cross
+    // as we searching for A and scan letters around, just iterate on a submatrix without 1 col and 1 line
+    let mut nb_cross: usize = 0;
 
+    for i in 1..139 {
+        for j in 1..139 {
+            if data.get(&(i, j)) == Some(&'A') {
+                // check corners
+                let top_left = data.get(&(i - 1, j - 1)).expect("msg");
+                let top_right = data.get(&(i - 1, j + 1)).expect("msg");
+                let bot_left = data.get(&(i + 1, j - 1)).expect("msg");
+                let bot_right = data.get(&(i + 1, j + 1)).expect("msg");
+
+                if (top_left != bot_right && top_right != bot_left)
+                    && (*top_left == 'M' || *top_left == 'S')
+                    && (*top_right == 'M' || *top_right == 'S')
+                    && (*bot_left == 'M' || *bot_left == 'S')
+                    && (*bot_right == 'M' || *bot_right == 'S')
+                {
+                    nb_cross += 1;
+                }
+            }
+        }
+    }
+
+    nb_cross
+}
 #[cfg(test)]
 mod test {
     use super::*;
@@ -87,6 +125,10 @@ mod test {
         assert_eq!(part1(&input), result);
     }
 
-    // #[test]
-    // fn test_part2() {}
+    #[test]
+    fn test_part2() {
+        let input = parse_input_part2(read_file("day4_example").as_str());
+        let result: usize = 9;
+        assert_eq!(part2(&input), result);
+    }
 }
