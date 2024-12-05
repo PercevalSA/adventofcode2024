@@ -1,9 +1,8 @@
-use crate::utils::read_file;
 use aoc_runner_derive::{aoc, aoc_generator};
 use std::collections::HashMap;
 
 #[aoc_generator(day5)]
-fn parse(input: &str) -> (HashMap<u8, Vec<u8>>, Vec<Vec<u8>>) {
+fn parse(input: &str) -> (HashMap<(u8, u8), u8>, Vec<Vec<u8>>) {
     // split on double line break: then split on pipe or split on comma
     let mut splitted_input = input.split("\n\n");
     let rules = splitted_input.next().expect("rules").lines();
@@ -11,17 +10,22 @@ fn parse(input: &str) -> (HashMap<u8, Vec<u8>>, Vec<Vec<u8>>) {
 
     // rules can be view as an oriented graph
     // then the page are the path and we need to know if the path exist or not
-    let mut graph: HashMap<u8, Vec<u8>> = HashMap::new();
+    let mut graph: HashMap<(u8, u8), _> = HashMap::new();
     for rule in rules {
         let mut nodes = rule.split("|");
         let from: u8 = nodes.next().unwrap().parse().unwrap();
         let to: u8 = nodes.next().unwrap().parse().unwrap();
 
-        if graph.contains_key(&from) {
-            graph.get_mut(&from).expect("from mut").push(to);
-        } else {
-            graph.insert(from, vec![to]);
-        }
+        // this generates an oriented graph
+        // let mut graph: HashMap<u8, Vec<u8>> = HashMap::new();
+        // if graph.contains_key(&from) {
+        //     graph.get_mut(&from).expect("from mut").push(to);
+        // } else {
+        //     graph.insert(from, vec![to]);
+        // }
+
+        // as all solutions are in rules we can have just a hash map of pairs
+        graph.insert((from, to), 0);
     }
 
     println!("This is my graph {:?}", graph);
@@ -40,19 +44,26 @@ fn parse(input: &str) -> (HashMap<u8, Vec<u8>>, Vec<Vec<u8>>) {
 }
 
 #[aoc(day5, part1)]
-fn part1(input: &(HashMap<u8, Vec<u8>>, Vec<Vec<u8>>)) -> u32 {
+fn part1(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
     let (graph, pages) = input;
-    let result = 0;
+    let mut result: usize = 0;
 
     for update in pages {
-        let mut is_valid = false;
+        println!("Update: {:?}", update);
+        for win in update.windows(2) {
+            let toto = (win[0], win[1]);
+            // println!("tuple {:?}", toto);
+            if !graph.contains_key(&toto) {
+                println!("Invalid update");
+                break;
+            }
+        }
 
-        let result = update
-            .windows(2)
-            .inspect(|win| println!("a: {}, b: {}", win[0], win[1]))
-            .collect::<Vec<_>>();
-
-        println!("result {:?}", result);
+        // update is valid
+        let length = update.len();
+        // always odd number of pages
+        let middle = (length - 1) / 2;
+        result += update[middle] as usize;
     }
     result
 }
@@ -65,12 +76,13 @@ fn part1(input: &(HashMap<u8, Vec<u8>>, Vec<Vec<u8>>)) -> u32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::utils::read_file;
 
     #[test]
     fn part1_example() {
         let input = parse(read_file("day5_example").as_str());
-        let result: u32 = 143;
-        assert_eq!(part1(input), result);
+        let result: usize = 143;
+        assert_eq!(part1(&input), result);
     }
 
     // #[test]
