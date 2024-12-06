@@ -1,7 +1,7 @@
-use aoc_runner_derive::{aoc, aoc_generator};
+use aoc_runner_derive::aoc;
 use std::collections::HashSet;
 
-#[aoc_generator(day5)]
+// #[aoc_generator(day5)]
 pub fn parse(input: &str) -> (HashSet<(u8, u8)>, Vec<Vec<u8>>) {
     // split on double line break: then split on pipe or split on comma
     let mut sections = input.split("\n\n");
@@ -38,8 +38,9 @@ pub fn parse(input: &str) -> (HashSet<(u8, u8)>, Vec<Vec<u8>>) {
 }
 
 #[aoc(day5, part1)]
-pub fn part1(input: &(HashSet<(u8, u8)>, Vec<Vec<u8>>)) -> usize {
-    let (rules, all_updates) = input;
+pub fn part1(input: &str) -> usize {
+    let data: (HashSet<(u8, u8)>, Vec<Vec<u8>>) = parse(input);
+    let (rules, all_updates) = data;
     let mut result: usize = 0;
 
     // println!("all update: {:?}", all_updates);
@@ -65,8 +66,9 @@ pub fn part1(input: &(HashSet<(u8, u8)>, Vec<Vec<u8>>)) -> usize {
 }
 
 #[aoc(day5, part2)]
-pub fn part2(input: &(HashSet<(u8, u8)>, Vec<Vec<u8>>)) -> usize {
-    let (rules, all_updates) = input;
+pub fn part2(input: &str) -> usize {
+    let data: (HashSet<(u8, u8)>, Vec<Vec<u8>>) = parse(input);
+    let (rules, all_updates) = data;
     let mut result: usize = 0;
 
     // println!("all update: {:?}", all_updates);

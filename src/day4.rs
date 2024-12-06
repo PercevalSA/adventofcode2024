@@ -1,8 +1,8 @@
-use aoc_runner_derive::{aoc, aoc_generator};
+use aoc_runner_derive::aoc;
 use std::collections::HashMap;
 use std::io::BufRead;
 
-#[aoc_generator(day4, part1)]
+// #[aoc_generator(day4, part1)]
 pub fn parse_input(input: &str) -> Vec<String> {
     // generates all lines present in data so in gain time in search
     // transform everything as byte to be faster
@@ -63,7 +63,17 @@ pub fn parse_input(input: &str) -> Vec<String> {
     all_data
 }
 
-#[aoc_generator(day4, part2)]
+#[aoc(day4, part1)]
+pub fn part1(input: &str) -> usize {
+    let data = parse_input(input);
+    let mut result: usize = 0;
+    for line in data {
+        result += line.match_indices("XMAS").count();
+        result += line.match_indices("SAMX").count();
+    }
+    result
+}
+
 pub fn parse_input_part2(input: &str) -> HashMap<(usize, usize), char> {
     let mut all_chars: HashMap<(usize, usize), char> = HashMap::new();
     let lines = input.lines();
@@ -75,20 +85,11 @@ pub fn parse_input_part2(input: &str) -> HashMap<(usize, usize), char> {
     all_chars
 }
 
-#[aoc(day4, part1)]
-pub fn part1(data: &Vec<String>) -> usize {
-    let mut result: usize = 0;
-    for line in data {
-        result += line.match_indices("XMAS").count();
-        result += line.match_indices("SAMX").count();
-    }
-    result
-}
-
 #[aoc(day4, part2)]
-pub fn part2(data: &HashMap<(usize, usize), char>) -> usize {
+pub fn part2(input: &str) -> usize {
     // find MAS cross
     // as we searching for A and scan letters around, just iterate on a submatrix without 1 col and 1 line
+    let data = parse_input_part2(input);
     let mut nb_cross: usize = 0;
 
     for i in 1..139 {
@@ -121,7 +122,7 @@ mod test {
 
     #[test]
     fn test_part1() {
-        let input = parse_input(read_file("day4_example").as_str());
+        let input = read_file("day4_example");
         let result: usize = 18;
         assert_eq!(part1(&input), result);
     }
