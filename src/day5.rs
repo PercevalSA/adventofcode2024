@@ -84,32 +84,28 @@ pub fn part2(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
         let mut was_incorrect: bool = false;
         let mut is_correct: bool = false;
 
-        while !is_correct {
+        'outer: while !is_correct {
             // println!("in while {:?}", update_mut);
-            'inner: for (i, &previous_page) in update_mut.iter().enumerate() {
-                let update_slice = &update_mut[..];
 
-                // println!("pp index {} update len {}", pp_index, update_length);
-                if i + 1 == update_length {
-                    // println!("is correct");
-                    is_correct = true;
-                    break;
-                }
-                for &next_page in &update_mut[i + 1..update_length] {
-                    let page_order = (previous_page, next_page);
-                    // println!("testing: {:?}", page_order);
-                    if !graph.contains_key(&page_order) {
-                        // here we swap the two numbers and the retest the whole update
+            for window in update_mut.windows(2) {
+                if let [previous_page, next_page] = window {
+                    if !graph.contains_key(&(*previous_page, *next_page)) {
+                        // here we swap the two numbers and re test the whole update by breaking the loop
                         // println!("Invalid update, swaping {:?}", page_order);
-                        let np_index = update_slice.iter().position(|p| *p == next_page).unwrap();
+                        let pp_index = update_mut
+                            .iter()
+                            .position(|p| *p == *previous_page)
+                            .unwrap();
+                        let np_index = update_mut.iter().position(|p| *p == *next_page).unwrap();
 
-                        update_mut.swap(i, np_index);
+                        update_mut.swap(pp_index, np_index);
                         // println!("new stuff: {:?}", update_mut);
                         was_incorrect = true;
-                        break 'inner;
+                        continue 'outer;
                     }
                 }
             }
+            is_correct = true
         }
 
         // println!("Update is valid: {:?}", update);
