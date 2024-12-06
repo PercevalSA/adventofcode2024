@@ -54,14 +54,14 @@ pub fn part1(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
         // println!("Update: {:?}", update);
         let update_length = update.len();
 
-        for previous_page in update {
-            let pp_index_next = update.iter().position(|p| p == previous_page).unwrap() + 1;
-            if pp_index_next >= update_length {
+        for (i, &previous_page) in update.iter().enumerate() {
+            if i + 1 >= update_length {
                 break;
             }
-            for next_page in update[pp_index_next..update_length].iter() {
-                let page_order = (*previous_page, *next_page);
+            for &next_page in &update[i + 1..update_length] {
+                let page_order = (previous_page, next_page);
                 // println!("testing: {:?}", page_order);
+
                 if !graph.contains_key(&page_order) {
                     // println!("Invalid update {:?}", page_order);
                     continue 'outer;
