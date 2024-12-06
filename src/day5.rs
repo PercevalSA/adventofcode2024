@@ -79,8 +79,7 @@ pub fn part2(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
 
     for update in all_updates {
         // println!("Update: {:?}", update);
-        let mut update_mut = update.clone();
-        let update_length = update_mut.len();
+        let mut update_mut = update.to_vec();
         let mut was_incorrect: bool = false;
         let mut is_correct: bool = false;
 
@@ -112,7 +111,7 @@ pub fn part2(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
 
         // always odd number of pages
         if was_incorrect {
-            let middle = (update_length - 1) / 2;
+            let middle = (update_mut.len() - 1) / 2;
             result += update_mut[middle] as usize;
         }
     }
