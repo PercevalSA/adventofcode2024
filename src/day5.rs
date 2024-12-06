@@ -152,4 +152,18 @@ mod tests {
         let result: usize = 123;
         assert_eq!(part2(&input), result);
     }
+
+    #[test]
+    fn day5_part1() {
+        let input = parse(read_file("day5").as_str());
+        let result: usize = 5108;
+        assert_eq!(part1(&input), result);
+    }
+
+    #[test]
+    fn day5_part2() {
+        let input = parse(read_file("day5").as_str());
+        let result: usize = 7380;
+        assert_eq!(part2(&input), result);
+    }
 }
