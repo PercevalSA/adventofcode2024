@@ -85,23 +85,25 @@ pub fn part2(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
 
     // println!("all update: {:?}", all_updates);
 
-    'outer: for mut update in all_updates {
+    for update in all_updates {
         // println!("Update: {:?}", update);
-        let update_length = update.len();
+        let mut update_mut = update.clone();
+        let update_length = update_mut.len();
         let mut was_incorrect: bool = false;
 
-        'inner: for previous_page in update {
-            let pp_index_next = update.iter().position(|p| p == previous_page).unwrap() + 1;
+        'inner: for previous_page in update_mut.iter() {
+            let test = &update_mut[..];
+            let pp_index_next = test.iter().position(|p| *p == *previous_page).unwrap() + 1;
             if pp_index_next >= update_length {
                 break;
             }
-            for next_page in update[pp_index_next..update_length].iter() {
+            for next_page in update_mut[pp_index_next..update_length].iter() {
                 let page_order = (*previous_page, *next_page);
                 // println!("testing: {:?}", page_order);
                 if !graph.contains_key(&page_order) {
                     // println!("Invalid update {:?}", page_order);
                     // here we swap the two numbers and the retest the whole update
-                    update.swap(pp_index_next - 1, pp_index_next);
+                    update_mut.swap(pp_index_next - 1, pp_index_next);
                     was_incorrect = true;
                     break 'inner;
                 }
@@ -114,7 +116,6 @@ pub fn part2(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
         if was_incorrect {
             let middle = (update_length - 1) / 2;
             result += update[middle] as usize;
-            was_incorrect = false;
         }
     }
     result
