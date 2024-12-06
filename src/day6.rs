@@ -1,7 +1,8 @@
-use aoc_runner_derive::{aoc, aoc_generator};
-#[aoc_generator(day6)]
+use aoc_runner_derive::aoc;
+
 fn parse(input: &str) -> String {
     todo!()
+    // data = input.lines().collect().split().map(|c]| c as char).collect();
 }
 
 #[aoc(day6, part1)]
@@ -13,7 +14,6 @@ fn part1(input: &str) -> String {
 fn part2(input: &str) -> String {
     todo!()
 }
-
 
 #[cfg(test)]
 mod tests {
