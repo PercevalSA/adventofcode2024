@@ -4,48 +4,42 @@ use std::collections::HashSet;
 #[aoc_generator(day5)]
 pub fn parse(input: &str) -> (HashSet<(u8, u8)>, Vec<Vec<u8>>) {
     // split on double line break: then split on pipe or split on comma
-    let mut splitted_input = input.split("\n\n");
-    let rules = splitted_input.next().expect("rules").lines();
-    let updates = splitted_input.next().expect("pages number").lines();
+    let mut sections = input.split("\n\n");
+    let rules_section = sections.next().expect("expected rules");
+    let updates_section = sections.next().expect("expected pages number");
 
     // rules can be view as an oriented graph
     // then the page are the path and we need to know if the path exist or not
-    let mut graph: HashSet<(u8, u8)> = HashSet::new();
-    for rule in rules {
-        let mut nodes = rule.split("|");
-        let from: u8 = nodes.next().unwrap().parse().unwrap();
-        let to: u8 = nodes.next().unwrap().parse().unwrap();
-
-        // this generates an oriented graph
-        // let mut graph: HashSet<u8, Vec<u8>> = HashSet::new();
-        // if graph.contains_key(&from) {
-        //     graph.get_mut(&from).expect("from mut").push(to);
-        // } else {
-        //     graph.insert(from, vec![to]);
-        // }
-
-        // as all solutions are in rules we can have just a hash map of pairs
-        graph.insert((from, to));
-    }
+    // as all solutions are in rules we can have just a hash set of pairs
+    let rules = rules_section
+        .lines()
+        .filter_map(|line| {
+            let mut nodes = line.split("|");
+            let before: u8 = nodes.next()?.parse().ok()?;
+            let after: u8 = nodes.next()?.parse().ok()?;
+            Some((before, after))
+        })
+        .collect::<HashSet<(u8, u8)>>();
 
     // println!("This is my graph {:?}", graph);
 
-    // let pages: Vec<Vec<u8>> = updates.iter().split(",").collect();
-    let mut pages: Vec<Vec<u8>> = vec![];
-    for update in updates {
-        let pages_suite = update.split(",");
-        let pages_numbers = pages_suite.map(|p| p.parse::<u8>().unwrap()).collect();
-        pages.push(pages_numbers);
-    }
+    let updates = updates_section
+        .lines()
+        .map(|line| {
+            line.split(',')
+                .filter_map(|num| num.parse().ok())
+                .collect::<Vec<u8>>()
+        })
+        .collect::<Vec<Vec<u8>>>();
 
     // println!("Those are updates: {:?}", pages);
 
-    (graph, pages)
+    (rules, updates)
 }
 
 #[aoc(day5, part1)]
 pub fn part1(input: &(HashSet<(u8, u8)>, Vec<Vec<u8>>)) -> usize {
-    let (graph, all_updates) = input;
+    let (rules, all_updates) = input;
     let mut result: usize = 0;
 
     // println!("all update: {:?}", all_updates);
@@ -54,7 +48,7 @@ pub fn part1(input: &(HashSet<(u8, u8)>, Vec<Vec<u8>>)) -> usize {
         // println!("Update: {:?}", update);
         for window in update.windows(2) {
             if let [previous_page, next_page] = window {
-                if !graph.contains(&(*previous_page, *next_page)) {
+                if !rules.contains(&(*previous_page, *next_page)) {
                     // println!("Invalid update {:?}", page_order);
                     continue 'outer;
                 }
@@ -72,7 +66,7 @@ pub fn part1(input: &(HashSet<(u8, u8)>, Vec<Vec<u8>>)) -> usize {
 
 #[aoc(day5, part2)]
 pub fn part2(input: &(HashSet<(u8, u8)>, Vec<Vec<u8>>)) -> usize {
-    let (graph, all_updates) = input;
+    let (rules, all_updates) = input;
     let mut result: usize = 0;
 
     // println!("all update: {:?}", all_updates);
@@ -88,7 +82,7 @@ pub fn part2(input: &(HashSet<(u8, u8)>, Vec<Vec<u8>>)) -> usize {
 
             for window in update_mut.windows(2) {
                 if let [previous_page, next_page] = window {
-                    if !graph.contains(&(*previous_page, *next_page)) {
+                    if !rules.contains(&(*previous_page, *next_page)) {
                         // here we swap the two numbers and re test the whole update by breaking the loop
                         // println!("Invalid update, swaping {:?}", page_order);
                         let pp_index = update_mut
