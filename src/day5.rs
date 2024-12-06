@@ -1,8 +1,8 @@
 use aoc_runner_derive::{aoc, aoc_generator};
-use std::collections::HashMap;
+use std::collections::HashSet;
 
 #[aoc_generator(day5)]
-pub fn parse(input: &str) -> (HashMap<(u8, u8), u8>, Vec<Vec<u8>>) {
+pub fn parse(input: &str) -> (HashSet<(u8, u8)>, Vec<Vec<u8>>) {
     // split on double line break: then split on pipe or split on comma
     let mut splitted_input = input.split("\n\n");
     let rules = splitted_input.next().expect("rules").lines();
@@ -10,14 +10,14 @@ pub fn parse(input: &str) -> (HashMap<(u8, u8), u8>, Vec<Vec<u8>>) {
 
     // rules can be view as an oriented graph
     // then the page are the path and we need to know if the path exist or not
-    let mut graph: HashMap<(u8, u8), _> = HashMap::new();
+    let mut graph: HashSet<(u8, u8)> = HashSet::new();
     for rule in rules {
         let mut nodes = rule.split("|");
         let from: u8 = nodes.next().unwrap().parse().unwrap();
         let to: u8 = nodes.next().unwrap().parse().unwrap();
 
         // this generates an oriented graph
-        // let mut graph: HashMap<u8, Vec<u8>> = HashMap::new();
+        // let mut graph: HashSet<u8, Vec<u8>> = HashSet::new();
         // if graph.contains_key(&from) {
         //     graph.get_mut(&from).expect("from mut").push(to);
         // } else {
@@ -25,7 +25,7 @@ pub fn parse(input: &str) -> (HashMap<(u8, u8), u8>, Vec<Vec<u8>>) {
         // }
 
         // as all solutions are in rules we can have just a hash map of pairs
-        graph.insert((from, to), 0);
+        graph.insert((from, to));
     }
 
     // println!("This is my graph {:?}", graph);
@@ -44,7 +44,7 @@ pub fn parse(input: &str) -> (HashMap<(u8, u8), u8>, Vec<Vec<u8>>) {
 }
 
 #[aoc(day5, part1)]
-pub fn part1(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
+pub fn part1(input: &(HashSet<(u8, u8)>, Vec<Vec<u8>>)) -> usize {
     let (graph, all_updates) = input;
     let mut result: usize = 0;
 
@@ -54,7 +54,7 @@ pub fn part1(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
         // println!("Update: {:?}", update);
         for window in update.windows(2) {
             if let [previous_page, next_page] = window {
-                if !graph.contains_key(&(*previous_page, *next_page)) {
+                if !graph.contains(&(*previous_page, *next_page)) {
                     // println!("Invalid update {:?}", page_order);
                     continue 'outer;
                 }
@@ -71,7 +71,7 @@ pub fn part1(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
 }
 
 #[aoc(day5, part2)]
-pub fn part2(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
+pub fn part2(input: &(HashSet<(u8, u8)>, Vec<Vec<u8>>)) -> usize {
     let (graph, all_updates) = input;
     let mut result: usize = 0;
 
@@ -88,7 +88,7 @@ pub fn part2(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
 
             for window in update_mut.windows(2) {
                 if let [previous_page, next_page] = window {
-                    if !graph.contains_key(&(*previous_page, *next_page)) {
+                    if !graph.contains(&(*previous_page, *next_page)) {
                         // here we swap the two numbers and re test the whole update by breaking the loop
                         // println!("Invalid update, swaping {:?}", page_order);
                         let pp_index = update_mut
