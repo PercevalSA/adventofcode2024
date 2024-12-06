@@ -33,6 +33,7 @@ pub fn bench_day_5(c: &mut Criterion) {
     let data = day5::parse(data_str.as_str());
 
     c.bench_function("day 5 part 1", |b| b.iter(|| day5::part1(black_box(&data))));
+    c.bench_function("day 5 part 2", |b| b.iter(|| day5::part2(black_box(&data))));
 }
 
 criterion_group!(benches, bench_day_2, bench_day_3, bench_day_4, bench_day_5);
