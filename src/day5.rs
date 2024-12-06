@@ -86,26 +86,39 @@ pub fn part2(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
     // println!("all update: {:?}", all_updates);
 
     for update in all_updates {
-        // println!("Update: {:?}", update);
+        println!("Update: {:?}", update);
         let mut update_mut = update.clone();
         let update_length = update_mut.len();
         let mut was_incorrect: bool = false;
+        let mut is_correct: bool = false;
 
-        'inner: for previous_page in update_mut.iter() {
-            let test = &update_mut[..];
-            let pp_index_next = test.iter().position(|p| *p == *previous_page).unwrap() + 1;
-            if pp_index_next >= update_length {
-                break;
-            }
-            for next_page in update_mut[pp_index_next..update_length].iter() {
-                let page_order = (*previous_page, *next_page);
-                // println!("testing: {:?}", page_order);
-                if !graph.contains_key(&page_order) {
-                    // println!("Invalid update {:?}", page_order);
-                    // here we swap the two numbers and the retest the whole update
-                    update_mut.swap(pp_index_next - 1, pp_index_next);
-                    was_incorrect = true;
-                    break 'inner;
+        while !is_correct {
+            println!("in while {:?}", update_mut);
+            'inner: for previous_page in update_mut.iter() {
+                let update_slice = &update_mut[..];
+                let pp_index = update_slice
+                    .iter()
+                    .position(|p| *p == *previous_page)
+                    .unwrap();
+                println!("pp index {} update len {}", pp_index, update_length);
+                if pp_index + 1 == update_length {
+                    println!("is correct");
+                    is_correct = true;
+                    break;
+                }
+                for next_page in update_mut[pp_index + 1..update_length].iter() {
+                    let page_order = (*previous_page, *next_page);
+                    println!("testing: {:?}", page_order);
+                    if !graph.contains_key(&page_order) {
+                        // here we swap the two numbers and the retest the whole update
+                        println!("Invalid update, swaping {:?}", page_order);
+                        let np_index = update_slice.iter().position(|p| *p == *next_page).unwrap();
+
+                        update_mut.swap(pp_index, np_index);
+                        println!("new stuff: {:?}", update_mut);
+                        was_incorrect = true;
+                        break 'inner;
+                    }
                 }
             }
         }
@@ -115,7 +128,7 @@ pub fn part2(input: &(HashMap<(u8, u8), u8>, Vec<Vec<u8>>)) -> usize {
         // always odd number of pages
         if was_incorrect {
             let middle = (update_length - 1) / 2;
-            result += update[middle] as usize;
+            result += update_mut[middle] as usize;
         }
     }
     result
